@@ -7,13 +7,15 @@
 #include <iostream>
 #include <vector>
 #define BUFSIZE 4096*10
-#define BLOCKSIZE 1024
+#define BLOCKSIZE 4096
 #define PORT 6060
 #define SERVERIP "192.168.37.131"
-#define PATH test
+#define PATH "test"
+#define SIZE 30
+ 
 static void usage()
 {
-    std::cout << "Usage: io=read|write start=N end=N [string=]" << std::endl;
+	std::cout << "Usage: io=read|write start=N end=N [string=]" << std::endl;
 }
 
 static std::string& StrTrim(std::string &s)   
@@ -70,83 +72,83 @@ static int isalldigit(char *s)
 
 static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 {
-   int ret = 0;
-   static const char keywords[] =
+	int ret = 0;
+	static const char keywords[] =
 		"io\0""start\0""end\0""context\0";
-   enum {
+	enum {
 		OP_io = 0,
 		OP_start,
 		OP_end,
 		OP_context
-   };
-   std::vector<std::string> a;
-   s=StrTrim(s);
-   a=StrSplit(s," ");
-   for(int i=0;i<a.size();i++)
-   {
-        int what;
-        std::string temp;
-        temp=a[i];
-	char *arg=const_cast<char*>(temp.c_str());
-        char *val = strchr(arg, '=');
-	if (NULL == val){
-		usage();
-                return 1;
-        }
-	*val = '\0';
-	what = index_in_strings(keywords, arg);
-	if (what < 0){
-		usage();
-                return 1;
-        }
-	val++;
-        std::string ptr;
-        switch (what) {
-	case OP_io:
-             ptr=val;
- 	     if(ptr=="read"){
-               flags=0;
-             }
-             else if(ptr=="write"){
-               flags=1;
-             }
-             else{
-	       usage();
-               return 1;
-             }
-             break;
-        case OP_start:
-             if(isalldigit(val)){
-               start=atoi(val);
-             }
-             else{
-               usage();
-               return 1;
-             }
-             break;
-        case OP_end:
-             if(isalldigit(val)){
-               end=atoi(val);
-             }
-             else{
-               usage();
-               return 1;
-             }
-             break;
-        case OP_context:
-             str=val;
-             break;
-        default:
-             usage();
-             return 1;
-        } 
-   }
-   if(start>=end){
-     std::cout << "start no more than end" << std::endl;
-     return 1;
-   }
-  
-   return 0;
+	};
+	std::vector<std::string> a;
+	s=StrTrim(s);
+	a=StrSplit(s," ");
+	for(int i=0;i<a.size();i++)
+	{
+	    int what;
+	    std::string temp;
+	    temp=a[i];
+		char *arg=const_cast<char*>(temp.c_str());
+		char *val = strchr(arg, '=');
+		if (NULL == val){
+			usage();
+		    return 1;
+		}
+		*val = '\0';
+		what = index_in_strings(keywords, arg);
+		if (what < 0){
+			usage();
+		    return 1;
+		}
+		val++;
+		std::string ptr;
+		switch (what) {
+			case OP_io:
+		         ptr=val;
+			     if(ptr=="read"){
+		         	flags=0;
+		         }
+		         else if(ptr=="write"){
+		            flags=1;
+		         }
+		         else{
+		            usage();
+		            return 1;
+		         }
+		         break;
+		    case OP_start:
+		         if(isalldigit(val)){
+		            start=atoi(val);
+		         }
+		         else{
+		            usage();
+		            return 1;
+		         }
+		         break;
+		    case OP_end:
+		         if(isalldigit(val)){
+		            end=atoi(val);
+		         }
+		         else{
+		            usage();
+		            return 1;
+		         }
+		         break;
+		    case OP_context:
+		         str=val;
+		         break;
+		    default:
+		         usage();
+		         return 1;
+		    } 
+	}
+	if(start>=end || start < 0){
+		std::cout << "start no more than end,or start less than 0" << std::endl;
+		return 1;
+	}
+
+	return 0;
 }
 
 #endif
