@@ -144,7 +144,7 @@ static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 		    } 
 	}
 	if(start>=end || start < 0){
-		std::cout << "start no more than end,or start less than 0" << std::endl;
+		std::cout << "start no more than end,or start no less than 0" << std::endl;
 		return 1;
 	}
 
