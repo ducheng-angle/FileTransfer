@@ -88,7 +88,7 @@ void *Thread_fun(void *arg)
            	std::string temp = ptr;
            	std::string buf = "read success!!!,context:" +temp;
            	ret = send(connfd,buf.c_str(),(end-start)*BLOCKSIZE+SIZE, 0);
-           	std::cout <<"contextlen: " << ret <<",context: "  <<ptr <<  std::endl;
+           	//std::cout <<"contextlen: " << ret <<",context: "  <<ptr <<  std::endl;
            	close(fd);
         }
         if(fd!=-1){
@@ -169,11 +169,11 @@ int main(int argc, char *argv[])
         inet_ntop(AF_INET, &client_addr.sin_addr, cli_ip, INET_ADDRSTRLEN);  
         std::cout<<"----------------------------------------------"<<std::endl;  
         std::cout<<"client ip=" << cli_ip <<",port=" << ntohs(client_addr.sin_port) << std::endl;
-        int *conn = &connfd ; 
+         
         if(connfd > 0)  
         {  
 	    	//由于同一个进程内的所有线程共享内存和变量，因此在传递参数时需作特殊处理，值传递。
-	    	pthread_create(&thread_id, NULL, Thread_fun, (void *)conn);  //创建线程  
+	    	pthread_create(&thread_id, NULL, Thread_fun, (void *)&connfd);  //创建线程  
             pthread_detach(thread_id); // 线程分离，结束时自动回收资源  
         }
     }  
