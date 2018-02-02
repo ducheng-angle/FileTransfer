@@ -23,6 +23,7 @@ void *Thread_fun(void *arg)
     char recv_buf[BUFSIZE] = "";   // 接收缓冲区  
     int connfd =*((int*)arg);// 传过来的已连接套
     // 接收数据  
+    char *ptr=NULL;
     while((recv_len = recv(connfd, recv_buf, sizeof(recv_buf), 0)) > 0)  
     { 
     	std::cout << recv_buf << std::endl; 
@@ -36,7 +37,7 @@ void *Thread_fun(void *arg)
         off_t offset = start*BLOCKSIZE;
         size_t count = (end-start)*BLOCKSIZE;
         size_t rw = 0;
-        char *ptr=NULL;
+        ptr=NULL;
         if(flags==1){
         	fd = open(PATH,O_WRONLY);
             if(fd < 0){
@@ -96,7 +97,10 @@ void *Thread_fun(void *arg)
         }
         
     }  
-      
+    if(ptr!=NULL){
+		delete ptr;
+		ptr=NULL;
+    }
     std::cout<< "client closed!"<<std::endl;  
     close(connfd);  //关闭已连接套接字  
 }  
