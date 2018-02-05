@@ -3,7 +3,7 @@
 ## Client
         Client  launch read or write request to Server
 ## How to build
-        Then excute make 
+        excute make 
 ## Writed by ducheng
-   2018/2/25
+   2018/2/
 
