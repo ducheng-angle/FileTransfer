@@ -15,7 +15,7 @@
  
 static void usage()
 {
-	std::cout << "Usage: io=read|write start=N end=N [string=]" << std::endl;
+	std::cout << "Usage: io=read|write start=N end=N [context=]" << std::endl;
 }
 
 static std::string& StrTrim(std::string &s)   
