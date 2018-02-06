@@ -13,7 +13,7 @@
 #define PATH "test"
 #define SIZE 30
  
-static void usage()
+static void Usage()
 {
 	std::cout << "Usage: io=read|write start=N end=N [context=]" << std::endl;
 }
@@ -92,13 +92,13 @@ static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 		char *arg=const_cast<char*>(temp.c_str());
 		char *val = strchr(arg, '=');
 		if (NULL == val){
-			usage();
+			Usage();
 		    return 1;
 		}
 		*val = '\0';
 		what = index_in_strings(keywords, arg);
 		if (what < 0){
-			usage();
+			Usage();
 		    return 1;
 		}
 		val++;
@@ -113,7 +113,7 @@ static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 		            flags=1;
 		         }
 		         else{
-		            usage();
+		            Usage();
 		            return 1;
 		         }
 		         break;
@@ -122,7 +122,7 @@ static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 		            start=atoi(val);
 		         }
 		         else{
-		            usage();
+		            Usage();
 		            return 1;
 		         }
 		         break;
@@ -131,7 +131,7 @@ static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 		            end=atoi(val);
 		         }
 		         else{
-		            usage();
+		            Usage();
 		            return 1;
 		         }
 		         break;
@@ -139,7 +139,7 @@ static int Parse(std::string s,int &flags,int &start,int &end,std::string &str)
 		         str=val;
 		         break;
 		    default:
-		         usage();
+		         Usage();
 		         return 1;
 		    } 
 	}
